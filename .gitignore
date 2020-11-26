@@ -129,9 +129,4 @@ Desktop.ini
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 
-Cake/tools/**
-FmEvents/Deploy/**
-FmEvents/packages/**
-Deploy/**
-packages/**
 .vs/**
