@@ -7,16 +7,17 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["GeoIp/GeoIp.csproj", "GeoIp/"]
-RUN dotnet restore "GeoIp/GeoIp.csproj"
 COPY . .
-WORKDIR "/src/GeoIp"
-RUN dotnet build "GeoIp.csproj" -c Release -o /app/build
+RUN dotnet restore "GeoIpMMdb.csproj"
+COPY . .
+WORKDIR "/src"
+#RUN dotnet build "GeoIpMMdb.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "GeoIp.csproj" -c Release -o /app/publish
+RUN dotnet publish "GeoIpMMdb.csproj" -c Release -o /app/publish
+COPY GeoLite2-Country.mmdb /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "GeoIp.dll"]
+ENTRYPOINT ["dotnet", "GeoIpMMdb.dll"]
