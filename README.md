@@ -11,11 +11,11 @@ For update database:
 # Web Api
 - GET /api​/country
 
-Response model:
-{
-  "countryCode": "string",
-  "countryName": "string",
-  "phoneCode": "string"
-}
+Response model:  
+{  
+  "countryCode": "string",  
+  "countryName": "string",  
+  "phoneCode": "string"  
+}  
 
 Example: https://localhost:44394/api/country?ip=8.8.4.4
