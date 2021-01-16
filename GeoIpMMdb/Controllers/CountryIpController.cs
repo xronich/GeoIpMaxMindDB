@@ -3,6 +3,7 @@ using GeoIp.Models;
 using GeoIpMMdb.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Net;
 
 namespace GeoIp.Controllers
@@ -12,9 +13,11 @@ namespace GeoIp.Controllers
     public class CountryIpController : ControllerBase
     {
         private readonly ILogger<CountryIpController> _logger;
+        private readonly GeoLite2Data _geoLite2Data;
 
-        public CountryIpController(ILogger<CountryIpController> logger)
+        public CountryIpController(IOptions<GeoLite2Data> geoLite2DataProvider, ILogger<CountryIpController> logger)
         {
+            _geoLite2Data = geoLite2DataProvider.Value;
             _logger = logger;
         }
 
@@ -25,7 +28,7 @@ namespace GeoIp.Controllers
                 throw new GeoIpException("Failed parse ip");
 
 
-            var data = GeoLite2Data.GetDataByIp(ipAddr);
+            var data = _geoLite2Data.GetDataByIp(ipAddr);
 
             return data;
         }

@@ -1,3 +1,5 @@
+using GeoIp.Implementation;
+using GeoIpMMdb.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -21,6 +23,12 @@ namespace GeoIp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var identityEmailProviderSection = Configuration.GetSection(nameof(MMDBConfigurationProvider));
+            services.Configure<MMDBConfigurationProvider>(identityEmailProviderSection);
+
+            var identityMMDBConfigurationProviderSection = Configuration.GetSection(nameof(GeoLite2Data));
+            services.Configure<GeoLite2Data>(identityMMDBConfigurationProviderSection);
+
             services.AddControllers();
 
             services.AddSwaggerGen(c =>

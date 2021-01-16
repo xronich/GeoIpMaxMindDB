@@ -1,21 +1,25 @@
 ﻿using GeoIp.Models;
+using GeoIpMMdb.Configuration;
 using MaxMind.Db;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Linq;
 using System.Net;
 
 namespace GeoIp.Implementation
 {
-    public static class GeoLite2Data
+    public class GeoLite2Data
     {
-        public static Reader GeoIpReader;
-
-        static GeoLite2Data()
+        private Reader GeoIpReader;
+        private MMDBConfigurationProvider _MMDBConfiguration;
+        public GeoLite2Data(IOptions<MMDBConfigurationProvider> MMDBConfigurationProvider)
         {
-            GeoIpReader = new Reader("GeoLite2-Country.mmdb");
+            _MMDBConfiguration = MMDBConfigurationProvider.Value;
+
+            GeoIpReader = new Reader(_MMDBConfiguration.FilePath);
         }
 
-        public static CountryDataModel GetDataByIp(IPAddress ip)
+        public CountryDataModel GetDataByIp(IPAddress ip)
         {
             var data = GeoIpReader.Find<object>(ip);
 
