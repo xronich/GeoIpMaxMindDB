@@ -1,6 +1,6 @@
 ﻿namespace GeoIpMMdb.Configuration
 {
-    public class MMDBConfigurationProvider
+    public class MMDBConfiguration
     {
         public string FilePath { get; set; }
     }

@@ -1,5 +1,6 @@
 ﻿using GeoIp.Implementation;
 using GeoIp.Models;
+using GeoIpMMdb.Configuration;
 using GeoIpMMdb.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,11 +14,11 @@ namespace GeoIp.Controllers
     public class CountryIpController : ControllerBase
     {
         private readonly ILogger<CountryIpController> _logger;
-        private readonly GeoLite2Data _geoLite2Data;
+        private readonly MMDBConfiguration _MMDBConfiguration;
 
-        public CountryIpController(IOptions<GeoLite2Data> geoLite2DataProvider, ILogger<CountryIpController> logger)
+        public CountryIpController(IOptions<MMDBConfiguration> MMDBConfigurationProvider, ILogger<CountryIpController> logger)
         {
-            _geoLite2Data = geoLite2DataProvider.Value;
+            _MMDBConfiguration = MMDBConfigurationProvider.Value;
             _logger = logger;
         }
 
@@ -27,8 +28,7 @@ namespace GeoIp.Controllers
             if (!IPAddress.TryParse(ip, out var ipAddr))
                 throw new GeoIpException("Failed parse ip");
 
-
-            var data = _geoLite2Data.GetDataByIp(ipAddr);
+            var data = new GeoLite2Data(_MMDBConfiguration.FilePath).GetDataByIp(ipAddr);
 
             return data;
         }

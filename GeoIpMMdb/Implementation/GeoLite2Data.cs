@@ -11,12 +11,9 @@ namespace GeoIp.Implementation
     public class GeoLite2Data
     {
         private Reader GeoIpReader;
-        private MMDBConfigurationProvider _MMDBConfiguration;
-        public GeoLite2Data(IOptions<MMDBConfigurationProvider> MMDBConfigurationProvider)
+        public GeoLite2Data(string filePath)
         {
-            _MMDBConfiguration = MMDBConfigurationProvider.Value;
-
-            GeoIpReader = new Reader(_MMDBConfiguration.FilePath);
+            GeoIpReader = new Reader(filePath);
         }
 
         public CountryDataModel GetDataByIp(IPAddress ip)
